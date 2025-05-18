@@ -11,6 +11,9 @@ testConnection();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+// app.use('/blog-images', express.static('public/blog-images'));
+app.use(express.static('public'));
+
 app.use("/api", routes);
 
 app.listen(PORT, () => {

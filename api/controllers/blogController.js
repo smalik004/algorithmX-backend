@@ -17,7 +17,8 @@ const getBlogs = async (req, res) => {
 const addBlog = async (req, res) => {
   try {
     const payload = req.body;
-    const result = await addBlogUser(payload);
+    const file = req.file?.filename;
+    const result = await addBlogUser(payload, file);
     res.status(result.status).json(result);
   } catch (err) {
     res.status(err?.status).json(err);

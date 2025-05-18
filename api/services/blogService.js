@@ -18,21 +18,24 @@ const getBlogsUser = async () => {
   }
 };
 
-const addBlogUser = async (payload) => {
+const addBlogUser = async (payload, file) => {
   try {
+    const parsedCategory = JSON.parse(payload?.category || "[]");
+    const parsedTags = JSON.parse(payload?.tags || "[]");
+    const parsedMetaTags = JSON.parse(payload?.meta_tags || "[]");
     const data = {
       blog_id: `BL${payload?.title?.substring(0, 3) ?? "UNK"}${Date.now()}`,
       slug: payload?.slug,
       title: payload?.title,
       meta_description: payload?.meta_description,
-      meta_tags: payload?.meta_tags,
+      meta_tags: parsedMetaTags,
       meta_keywords: payload?.meta_keywords,
       summary: payload?.summary,
       content: payload?.content,
-      image_url: payload?.url,
+      image_url: `${process.env.BASE_URL}/blog-images/${file}`,
       image_alt: payload?.image_alt,
-      category: payload?.category,
-      tags: payload?.tags,
+      category: parsedCategory,
+      tags: parsedTags,
       post_date: payload?.post_date,
       author_id: payload.author_id,
       author_name: payload.author_name,
@@ -41,6 +44,7 @@ const addBlogUser = async (payload) => {
       status: payload?.status,
       is_featured: false,
     };
+    console.log(data, "data");
     const result = await blogs.create(data);
     if (result) {
       return successResponse(StatusCode.SUCCESS.OK, "Blog Added Successfully!");
