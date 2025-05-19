@@ -3,6 +3,7 @@ const {
   addBlogUser,
   deleteBlogUser,
   updateBlogUser,
+  getBlogByIdUser,
 } = require("../services/blogService");
 
 const getBlogs = async (req, res) => {
@@ -45,4 +46,14 @@ const updateBlog = async (req, res) => {
   }
 };
 
-module.exports = { getBlogs, addBlog, deleteBlog, updateBlog };
+const getBlogById = async (req, res) => {
+  try {
+    const payload = req.params;
+    const result = await getBlogByIdUser(payload);
+    res.status(result.status).json(result);
+  } catch (err) {
+    res.status(err?.status).json(err);
+  }
+};
+
+module.exports = { getBlogs, addBlog, deleteBlog, updateBlog, getBlogById };

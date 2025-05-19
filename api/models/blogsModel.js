@@ -39,7 +39,7 @@ const blogs = sequelize.define("blogs", {
     allowNull: true,
   },
   content: {
-    type: DataTypes.TEXT("long"),
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   image_url: {

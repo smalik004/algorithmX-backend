@@ -40,9 +40,8 @@ const addBlogUser = async (payload, file) => {
       author_id: payload.author_id,
       author_name: payload.author_name,
       author_ip: payload.author_ip,
-      views: "12",
       status: payload?.status,
-      is_featured: false,
+      is_featured: payload?.is_featured,
     };
     console.log(data, "data");
     const result = await blogs.create(data);
@@ -139,9 +138,27 @@ const updateBlogUser = async (payload) => {
   }
 };
 
+const getBlogByIdUser = async (payload) => {
+  try {
+    const result = await blogs.findOne({
+      where: {
+        id: payload?.blogId,
+        isActive: true,
+      },
+    });
+    return successResponse(StatusCode.SUCCESS.OK, "Success!", result);
+  } catch (err) {
+    throw rejectResponse(
+      StatusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      err?.message
+    );
+  }
+};
+
 module.exports = {
   getBlogsUser,
   addBlogUser,
   deleteBlogUser,
   updateBlogUser,
+  getBlogByIdUser,
 };

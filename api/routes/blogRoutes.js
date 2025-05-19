@@ -5,6 +5,7 @@ const {
   addBlog,
   deleteBlog,
   updateBlog,
+  getBlogById,
 } = require("../controllers/blogController");
 const { isAuthorized } = require("../middleware/authMiddleware");
 const multer = require("multer");
@@ -45,5 +46,6 @@ router.get("/get-blogs", isAuthorized, getBlogs);
 router.post("/add-blog", isAuthorized, upload.single("blog_image"), addBlog);
 router.patch("/delete-blog/:blogId", isAuthorized, deleteBlog);
 router.put("/update-blog", isAuthorized, updateBlog);
+router.get("/:blogId", isAuthorized, getBlogById);
 
 module.exports = router;
