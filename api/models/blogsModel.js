@@ -31,7 +31,7 @@ const blogs = sequelize.define("blogs", {
     allowNull: true,
   },
   meta_keywords: {
-    type: DataTypes.STRING,
+    type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: true,
   },
   summary: {
@@ -51,7 +51,7 @@ const blogs = sequelize.define("blogs", {
     allowNull: true,
   },
   category: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.STRING,
     allowNull: true,
   },
   tags: {

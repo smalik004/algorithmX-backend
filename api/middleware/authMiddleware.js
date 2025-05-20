@@ -2,7 +2,7 @@ const users = require("../models/userModel");
 const { verifyToken } = require("../utils/commonFunc");
 const StatusCode = require("../utils/statusCode");
 
-const isAuthorized = (req, res, next) => {
+const isAuthorized = async (req, res, next) => {
   const token = req.headers?.authorization;
   if (!token) {
     res.status(404).send("Unauthorized!");
@@ -10,7 +10,7 @@ const isAuthorized = (req, res, next) => {
     const splitToken = token?.split(" ")[1];
     const authData = verifyToken(splitToken);
     if (authData) {
-      const verifyUser = users.findOne({
+      const verifyUser = await users.findOne({
         where: {
           email: authData.email,
           isActive: true,

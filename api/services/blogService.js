@@ -20,21 +20,21 @@ const getBlogsUser = async () => {
 
 const addBlogUser = async (payload, file) => {
   try {
-    const parsedCategory = JSON.parse(payload?.category || "[]");
     const parsedTags = JSON.parse(payload?.tags || "[]");
     const parsedMetaTags = JSON.parse(payload?.meta_tags || "[]");
+    const parsedMetaKeywords = JSON.parse(payload?.meta_keywords || "[]");
     const data = {
       blog_id: `BL${payload?.title?.substring(0, 3) ?? "UNK"}${Date.now()}`,
       slug: payload?.slug,
       title: payload?.title,
       meta_description: payload?.meta_description,
       meta_tags: parsedMetaTags,
-      meta_keywords: payload?.meta_keywords,
+      meta_keywords: parsedMetaKeywords,
       summary: payload?.summary,
       content: payload?.content,
       image_url: `${process.env.BASE_URL}/blog-images/${file}`,
       image_alt: payload?.image_alt,
-      category: parsedCategory,
+      category: payload?.category,
       tags: parsedTags,
       post_date: payload?.post_date,
       author_id: payload.author_id,
@@ -43,10 +43,12 @@ const addBlogUser = async (payload, file) => {
       status: payload?.status,
       is_featured: payload?.is_featured,
     };
-    console.log(data, "data");
     const result = await blogs.create(data);
     if (result) {
-      return successResponse(StatusCode.SUCCESS.OK, "Blog Added Successfully!");
+      return successResponse(
+        StatusCode.SUCCESS.CREATED,
+        "Blog Added Successfully!"
+      );
     }
   } catch (err) {
     throw rejectResponse(
@@ -97,18 +99,21 @@ const updateBlogUser = async (payload) => {
       },
     });
     if (isBlogExist) {
+      const parsedTags = JSON.parse(payload?.tags || "[]");
+      const parsedMetaTags = JSON.parse(payload?.meta_tags || "[]");
+      const parsedMetaKeywords = JSON.parse(payload?.meta_keywords || "[]");
       const data = {
         slug: payload?.slug,
         title: payload?.title,
         meta_description: payload?.meta_description,
-        meta_tags: payload?.meta_tags,
-        meta_keywords: payload?.meta_keywords,
+        meta_tags: parsedMetaTags,
+        meta_keywords: parsedMetaKeywords,
         summary: payload?.summary,
         content: payload?.content,
         image_url: payload?.url,
         image_alt: payload?.image_alt,
         category: payload?.category,
-        tags: payload?.tags,
+        tags: parsedTags,
         post_date: payload?.post_date,
         author_id: payload.author_id,
         author_name: payload.author_name,
