@@ -39,7 +39,8 @@ const deleteBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
   try {
     const payload = req.body;
-    const result = await updateBlogUser(payload);
+    const file = req.file?.filename;
+    const result = await updateBlogUser(payload, file);
     res.status(result.status).json(result);
   } catch (err) {
     res.status(err?.status).json(err);

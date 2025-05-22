@@ -91,7 +91,7 @@ const deleteBlogUser = async (payload) => {
   }
 };
 
-const updateBlogUser = async (payload) => {
+const updateBlogUser = async (payload, file) => {
   try {
     const isBlogExist = await blogs.findOne({
       where: {
@@ -110,7 +110,9 @@ const updateBlogUser = async (payload) => {
         meta_keywords: parsedMetaKeywords,
         summary: payload?.summary,
         content: payload?.content,
-        image_url: payload?.url,
+        image_url: file
+          ? `${process.env.BASE_URL}/blog-images/${file}`
+          : payload?.blog_image,
         image_alt: payload?.image_alt,
         category: payload?.category,
         tags: parsedTags,
