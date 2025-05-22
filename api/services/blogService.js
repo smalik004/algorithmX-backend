@@ -121,7 +121,7 @@ const updateBlogUser = async (payload, file) => {
         author_name: payload.author_name,
         author_ip: payload.author_ip,
         status: payload?.status,
-        is_featured: false,
+        is_featured: payload?.is_featured,
         updatedAt: new Date(),
       };
       const updateBlog = await isBlogExist.update(data);
