@@ -1,18 +1,19 @@
 const blogs = require("../models/blogsModel");
 const { rejectResponse, successResponse } = require("../utils/response");
-const StatusCode = require("../utils/statusCode");
+const { statusCode } = require("../utils/statusCode");
 
 const getBlogsUser = async () => {
   try {
     const result = await blogs.findAll({
       where: {
         isActive: true,
+        order: [["createdAt", "DESC"]],
       },
     });
-    return successResponse(StatusCode.SUCCESS.OK, "Success!", result);
+    return successResponse(statusCode.SUCCESS.OK, "Success!", result);
   } catch (err) {
     throw rejectResponse(
-      StatusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
       err?.message
     );
   }
@@ -46,13 +47,13 @@ const addBlogUser = async (payload, file) => {
     const result = await blogs.create(data);
     if (result) {
       return successResponse(
-        StatusCode.SUCCESS.CREATED,
+        statusCode.SUCCESS.CREATED,
         "Blog Added Successfully!"
       );
     }
   } catch (err) {
     throw rejectResponse(
-      StatusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
       err?.message
     );
   }
@@ -73,19 +74,19 @@ const deleteBlogUser = async (payload) => {
       const updateBlog = await isBlogExist.update(data);
       if (updateBlog) {
         return successResponse(
-          StatusCode.SUCCESS.OK,
+          statusCode.SUCCESS.OK,
           "Blog deleted successfully!"
         );
       }
     } else {
       return rejectResponse(
-        StatusCode.CLIENT_ERROR.NOT_FOUND,
+        statusCode.CLIENT_ERROR.NOT_FOUND,
         "Blog not found!"
       );
     }
   } catch (err) {
     throw rejectResponse(
-      StatusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
       err?.message
     );
   }
@@ -127,19 +128,19 @@ const updateBlogUser = async (payload, file) => {
       const updateBlog = await isBlogExist.update(data);
       if (updateBlog) {
         return successResponse(
-          StatusCode.SUCCESS.OK,
+          statusCode.SUCCESS.OK,
           "Blog updated successfully!"
         );
       }
     } else {
       return rejectResponse(
-        StatusCode.CLIENT_ERROR.NOT_FOUND,
+        statusCode.CLIENT_ERROR.NOT_FOUND,
         "Blog not found!"
       );
     }
   } catch (err) {
     throw rejectResponse(
-      StatusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
       err?.message
     );
   }
@@ -153,10 +154,10 @@ const getBlogByIdUser = async (payload) => {
         isActive: true,
       },
     });
-    return successResponse(StatusCode.SUCCESS.OK, "Success!", result);
+    return successResponse(statusCode.SUCCESS.OK, "Success!", result);
   } catch (err) {
     throw rejectResponse(
-      StatusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
       err?.message
     );
   }

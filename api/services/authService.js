@@ -5,7 +5,7 @@ const {
   verifyToken,
 } = require("../utils/commonFunc");
 const { rejectResponse, successResponse } = require("../utils/response");
-const StatusCode = require("../utils/statusCode");
+const { statusCode } = require("../utils/statusCode");
 
 const signInUser = async (payload) => {
   try {
@@ -36,23 +36,23 @@ const signInUser = async (payload) => {
             data.token = generateTokenResult;
           }
 
-          return successResponse(StatusCode.SUCCESS.OK, "Success!", data);
+          return successResponse(statusCode.SUCCESS.OK, "Success!", data);
         }
       } else {
         return rejectResponse(
-          StatusCode.CLIENT_ERROR.UNAUTHORIZED,
+          statusCode.CLIENT_ERROR.UNAUTHORIZED,
           "Incorrect password! Please try again"
         );
       }
     } else {
       return rejectResponse(
-        StatusCode.CLIENT_ERROR.NOT_FOUND,
+        statusCode.CLIENT_ERROR.NOT_FOUND,
         "Email doesn't exist!"
       );
     }
   } catch (err) {
     throw rejectResponse(
-      StatusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
       err?.message
     );
   }
@@ -76,15 +76,15 @@ const signOutUser = async (token) => {
         };
         const result = await verifyUser.update(data);
         if (result) {
-          return successResponse(StatusCode.SUCCESS.OK, "Logout Success!");
+          return successResponse(statusCode.SUCCESS.OK, "Logout Success!");
         }
       } else {
-        res.status(StatusCode.CLIENT_ERROR.UNAUTHORIZED).send("Unauthorized!");
+        res.status(statusCode.CLIENT_ERROR.UNAUTHORIZED).send("Unauthorized!");
       }
     }
   } catch (err) {
     throw rejectResponse(
-      StatusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
       err?.message
     );
   }

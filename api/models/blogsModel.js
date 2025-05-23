@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db/dbConfig");
 const users = require("./userModel");
+const blogCategories = require("./blogCategoriesModel");
 
 const blogs = sequelize.define("blogs", {
   id: {
@@ -15,8 +16,7 @@ const blogs = sequelize.define("blogs", {
   },
   slug: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
+    allowNull: true,
   },
   title: {
     type: DataTypes.STRING,
@@ -50,9 +50,9 @@ const blogs = sequelize.define("blogs", {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  category: {
-    type: DataTypes.STRING,
-    allowNull: true,
+  category_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
   tags: {
     type: DataTypes.ARRAY(DataTypes.STRING),
@@ -94,6 +94,7 @@ const blogs = sequelize.define("blogs", {
 });
 
 blogs.belongsTo(users, { foreignKey: "author_id" });
+blogs.belongsTo(blogCategories, { foreignKey: "category_id" });
 
 // sequelize
 //   .sync({ force: true })
