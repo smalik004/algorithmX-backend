@@ -7,8 +7,8 @@ const getBlogsUser = async () => {
     const result = await blogs.findAll({
       where: {
         isActive: true,
-        order: [["createdAt", "DESC"]],
       },
+      order: [["createdAt", "DESC"]],
     });
     return successResponse(statusCode.SUCCESS.OK, "Success!", result);
   } catch (err) {
