@@ -8,6 +8,8 @@ const {
   getBlogById,
   getCategories,
   addCategories,
+  updateCategory,
+  deleteCategory,
 } = require("../controllers/blogController");
 const { isAuthorized } = require("../middleware/authMiddleware");
 const { dynamicUpload } = require("../middleware/imageUploadMiddleware");
@@ -30,10 +32,8 @@ router.get("/:blogId", getBlogById);
 
 // categories
 router.get("/", getCategories);
-router.post(
-  "/",
-  isAuthorized,
-  addCategories
-);
+router.post("/", isAuthorized, addCategories);
+router.put("/:categoryId", isAuthorized, updateCategory);
+router.delete("/:categoryId", isAuthorized, deleteCategory);
 
 module.exports = router;

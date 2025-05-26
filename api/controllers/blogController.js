@@ -6,6 +6,8 @@ const {
   getBlogByIdUser,
   getCategoriesUser,
   addCategoriesUser,
+  updateCategoryUser,
+  deleteCategoryUser,
 } = require("../services/blogService");
 
 const getBlogs = async (req, res) => {
@@ -78,6 +80,27 @@ const addCategories = async (req, res) => {
   }
 };
 
+const updateCategory = async (req, res) => {
+  try {
+    const params = req.params;
+    const body = req.body;
+    const result = await updateCategoryUser(params, body);
+    res.status(result.status).json(result);
+  } catch (err) {
+    res.status(err?.status).json(err);
+  }
+};
+
+const deleteCategory = async (req, res) => {
+  try {
+    const params = req.params;
+    const result = await deleteCategoryUser(params);
+    res.status(result.status).json(result);
+  } catch (err) {
+    res.status(err?.status).json(err);
+  }
+};
+
 module.exports = {
   getBlogs,
   addBlog,
@@ -85,5 +108,7 @@ module.exports = {
   updateBlog,
   getBlogById,
   getCategories,
-  addCategories
+  addCategories,
+  updateCategory,
+  deleteCategory,
 };

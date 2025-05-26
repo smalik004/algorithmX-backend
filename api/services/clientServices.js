@@ -91,6 +91,7 @@ const updateClientUser = async (params, body) => {
         brandRegion: body?.brandRegion,
         brandRequirement: body?.brandRequirement,
         title: body?.title,
+        updatedAt: new Date(),
       };
       const result = await isClientExist.update(data);
       if (result) {

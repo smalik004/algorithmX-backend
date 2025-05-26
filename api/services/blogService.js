@@ -210,6 +210,70 @@ const addCategoriesUser = async (payload) => {
   }
 };
 
+const updateCategoryUser = async (params, body) => {
+  try {
+    const { title } = body;
+
+    const isCategoryExist = await blogCategories.findOne({
+      where: {
+        id: params?.categoryId,
+      },
+    });
+    if (isCategoryExist) {
+      const data = {
+        title,
+        updatedAt: new Date(),
+      };
+      const result = await isCategoryExist.update(data);
+      if (result) {
+        return successResponse(
+          statusCode.SUCCESS.OK,
+          "Category Updated Successfully!"
+        );
+      }
+    } else {
+      return rejectResponse(
+        statusCode.CLIENT_ERROR.NOT_FOUND,
+        "Category doesn't Exist!"
+      );
+    }
+  } catch (err) {
+    throw rejectResponse(
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      err?.message
+    );
+  }
+};
+
+const deleteCategoryUser = async (params) => {
+  try {
+    const isCategoryExist = await blogCategories.findOne({
+      where: {
+        id: params?.categoryId,
+      },
+    });
+    if (isCategoryExist) {
+      const result = await isCategoryExist.destroy();
+      if (result) {
+        return successResponse(
+          statusCode.SUCCESS.OK,
+          "Category Deleted Successfully!"
+        );
+      }
+    } else {
+      return rejectResponse(
+        statusCode.CLIENT_ERROR.NOT_FOUND,
+        "Category doesn't Exist!"
+      );
+    }
+  } catch (err) {
+    throw rejectResponse(
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      err?.message
+    );
+  }
+};
+
 module.exports = {
   getBlogsUser,
   addBlogUser,
@@ -218,4 +282,6 @@ module.exports = {
   getBlogByIdUser,
   getCategoriesUser,
   addCategoriesUser,
+  updateCategoryUser,
+  deleteCategoryUser,
 };
