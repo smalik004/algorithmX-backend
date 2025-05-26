@@ -116,7 +116,7 @@ const updateBlogUser = async (payload, file) => {
           ? `${process.env.BASE_URL}/blog-images/${file}`
           : payload?.blog_image,
         image_alt: payload?.image_alt,
-        category: payload?.category,
+        category_id: payload?.category_id,
         tags: parsedTags,
         post_date: payload?.post_date,
         author_id: payload.author_id,
