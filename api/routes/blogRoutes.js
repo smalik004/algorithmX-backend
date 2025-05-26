@@ -33,7 +33,6 @@ router.get("/", getCategories);
 router.post(
   "/",
   isAuthorized,
-  dynamicUpload("category_image", "category-images"),
   addCategories
 );
 

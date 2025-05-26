@@ -176,7 +176,7 @@ const getCategoriesUser = async () => {
   }
 };
 
-const addCategoriesUser = async (payload, file) => {
+const addCategoriesUser = async (payload) => {
   try {
     const { title } = payload;
 
@@ -194,9 +194,6 @@ const addCategoriesUser = async (payload, file) => {
       const data = {
         title,
       };
-      if (file) {
-        data.image_url = `${process.env.BASE_URL}/blog-images/${file}`;
-      }
       const result = await blogCategories.create(data);
       if (result) {
         return successResponse(

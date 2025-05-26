@@ -71,8 +71,7 @@ const getCategories = async (req, res) => {
 const addCategories = async (req, res) => {
   try {
     const payload = req.body;
-    const file = req.file?.filename;
-    const result = await addCategoriesUser(payload, file);
+    const result = await addCategoriesUser(payload);
     res.status(result.status).json(result);
   } catch (err) {
     res.status(err?.status).json(err);

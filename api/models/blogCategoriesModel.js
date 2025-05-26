@@ -11,10 +11,6 @@ const blogCategories = sequelize.define("blog_categories", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  image_url: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
 });
 
 // sequelize
