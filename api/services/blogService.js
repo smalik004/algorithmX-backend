@@ -1,3 +1,4 @@
+const blogCategories = require("../models/blogCategoriesModel");
 const blogs = require("../models/blogsModel");
 const { rejectResponse, successResponse } = require("../utils/response");
 const { statusCode } = require("../utils/statusCode");
@@ -35,7 +36,7 @@ const addBlogUser = async (payload, file) => {
       content: payload?.content,
       image_url: `${process.env.BASE_URL}/blog-images/${file}`,
       image_alt: payload?.image_alt,
-      category: payload?.category,
+      category_id: payload?.category_id,
       tags: parsedTags,
       post_date: payload?.post_date,
       author_id: payload.author_id,
@@ -163,10 +164,61 @@ const getBlogByIdUser = async (payload) => {
   }
 };
 
+const getCategoriesUser = async () => {
+  try {
+    const result = await blogCategories.findAll();
+    return successResponse(statusCode.SUCCESS.OK, "Success!", result);
+  } catch (err) {
+    throw rejectResponse(
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      err?.message
+    );
+  }
+};
+
+const addCategoriesUser = async (payload, file) => {
+  try {
+    const { title } = payload;
+
+    const isCategoryExist = await blogCategories.findOne({
+      where: {
+        title,
+      },
+    });
+    if (isCategoryExist) {
+      return rejectResponse(
+        statusCode.CLIENT_ERROR.CONFLICT,
+        "Category Already Exist!"
+      );
+    } else {
+      const data = {
+        title,
+      };
+      if (file) {
+        data.image_url = `${process.env.BASE_URL}/blog-images/${file}`;
+      }
+      const result = await blogCategories.create(data);
+      if (result) {
+        return successResponse(
+          statusCode.SUCCESS.CREATED,
+          "Category Added Successfully!"
+        );
+      }
+    }
+  } catch (err) {
+    throw rejectResponse(
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      err?.message
+    );
+  }
+};
+
 module.exports = {
   getBlogsUser,
   addBlogUser,
   deleteBlogUser,
   updateBlogUser,
   getBlogByIdUser,
+  getCategoriesUser,
+  addCategoriesUser,
 };

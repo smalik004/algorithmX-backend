@@ -10,6 +10,7 @@ router.get("/", (req, res) => {
 
 router.use("/auth", authRoutes);
 router.use("/blog", blogRoutes);
-router.use("/client", clientRoutes);
+router.use("/clients", clientRoutes);
+router.use("/blog-categories", blogRoutes);
 
 module.exports = router;

@@ -1,23 +1,12 @@
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
-// Correct storage config
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../../public/blog-images"));
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + file.originalname;
-    cb(null, uniqueSuffix);
-  },
-});
+// Allowed image file types
+const allowedTypes = /jpeg|jpg|png|gif/;
 
-// Optional: allow only image file types
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif/;
-  const extName = allowedTypes.test(
-    path.extname(file.originalname).toLowerCase()
-  );
+  const extName = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mimeType = allowedTypes.test(file.mimetype);
 
   if (extName && mimeType) {
@@ -27,27 +16,42 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({
-  storage,
-  fileFilter,
-});
-
-const optionalUpload = (req, res, next) => {
-  const contentType = req.headers["content-type"] || "";
-  const isMultipart = contentType.startsWith("multipart/form-data");
-
-  if (isMultipart) {
-    upload.single("blog_image")(req, res, function (err) {
-      if (err) {
-        return res.status(400).json({ error: err.message });
-      }
-      next();
-    });
-  } else {
-    next();
+const dynamicUpload = (fieldName, folderName) => {
+  // Create folder if it doesn't exist
+  const destinationPath = path.join(__dirname, `../../public/${folderName}`);
+  if (!fs.existsSync(destinationPath)) {
+    fs.mkdirSync(destinationPath, { recursive: true });
   }
+
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, destinationPath);
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + "-" + file.originalname;
+      cb(null, uniqueSuffix);
+    },
+  });
+
+  const upload = multer({ storage, fileFilter });
+
+  return (req, res, next) => {
+    const contentType = req.headers["content-type"] || "";
+    const isMultipart = contentType.startsWith("multipart/form-data");
+
+    if (isMultipart) {
+      upload.single(fieldName)(req, res, (err) => {
+        if (err) {
+          return res.status(400).json({ error: err.message });
+        }
+        next();
+      });
+    } else {
+      next();
+    }
+  };
 };
 
 module.exports = {
-  optionalUpload,
+  dynamicUpload,
 };

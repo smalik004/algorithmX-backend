@@ -6,14 +6,35 @@ const {
   deleteBlog,
   updateBlog,
   getBlogById,
+  getCategories,
+  addCategories,
 } = require("../controllers/blogController");
 const { isAuthorized } = require("../middleware/authMiddleware");
-const { optionalUpload } = require("../middleware/imageUploadMiddleware");
+const { dynamicUpload } = require("../middleware/imageUploadMiddleware");
 
-router.get("/get-blogs", isAuthorized, getBlogs);
-router.post("/add-blog", isAuthorized, optionalUpload, addBlog);
+router.get("/get-blogs", getBlogs);
+router.post(
+  "/add-blog",
+  isAuthorized,
+  dynamicUpload("blog_image", "blog-images"),
+  addBlog
+);
 router.patch("/delete-blog/:blogId", isAuthorized, deleteBlog);
-router.put("/update-blog", isAuthorized, optionalUpload, updateBlog);
-router.get("/:blogId", isAuthorized, getBlogById);
+router.put(
+  "/update-blog",
+  isAuthorized,
+  dynamicUpload("blog_image", "blog-images"),
+  updateBlog
+);
+router.get("/:blogId", getBlogById);
+
+// categories
+router.get("/", getCategories);
+router.post(
+  "/",
+  isAuthorized,
+  dynamicUpload("category_image", "category-images"),
+  addCategories
+);
 
 module.exports = router;
