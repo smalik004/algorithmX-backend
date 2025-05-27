@@ -1,7 +1,6 @@
 const { rejectResponse, successResponse } = require("../utils/response");
 const { statusCode } = require("../utils/statusCode");
 const clients = require("../models/clientsModel");
-const blogCategories = require("../models/blogCategoriesModel");
 
 const getClientsUser = async () => {
   try {
