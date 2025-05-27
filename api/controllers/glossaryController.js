@@ -3,6 +3,7 @@ const {
   addGlossaryUser,
   updateGlossaryUser,
   deleteGlossaryUser,
+  getGlossaryByIdUser,
 } = require("../services/glossaryServices");
 
 const getGlossaries = async (req, res) => {
@@ -45,4 +46,20 @@ const deleteGlossary = async (req, res) => {
   }
 };
 
-module.exports = { getGlossaries, addGlossary, updateGlossary, deleteGlossary };
+const getGlossaryById = async (req, res) => {
+  try {
+    const params = req.params;
+    const result = await getGlossaryByIdUser(params);
+    res.status(result.status).json(result);
+  } catch (err) {
+    res.status(err?.status).json(err);
+  }
+};
+
+module.exports = {
+  getGlossaries,
+  addGlossary,
+  updateGlossary,
+  deleteGlossary,
+  getGlossaryById,
+};

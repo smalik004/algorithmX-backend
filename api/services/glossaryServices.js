@@ -114,9 +114,37 @@ const deleteGlossaryUser = async (params) => {
   }
 };
 
+const getGlossaryByIdUser = async (params) => {
+  try {
+    const isGLossaryExist = await glossary.findOne({
+      where: {
+        id: params?.glossaryId,
+      },
+    });
+    if (isGLossaryExist) {
+      return successResponse(
+        statusCode.SUCCESS.OK,
+        "Success!",
+        isGLossaryExist
+      );
+    } else {
+      return rejectResponse(
+        statusCode.CLIENT_ERROR.NOT_FOUND,
+        "Glossary not found!"
+      );
+    }
+  } catch (err) {
+    throw rejectResponse(
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      err?.message
+    );
+  }
+};
+
 module.exports = {
   getGlossariesUser,
   addGlossaryUser,
   updateGlossaryUser,
   deleteGlossaryUser,
+  getGlossaryByIdUser,
 };
