@@ -8,9 +8,9 @@ const {
 } = require("../controllers/clientController");
 const { isAuthorized } = require("../middleware/authMiddleware");
 
-router.get("/", isAuthorized, getClients);
-router.post("/", addClient);
-router.patch("/:clientId", deleteClient);
-router.put("/:clientId", updateClient);
+router.get("/", getClients);
+router.post("/", isAuthorized, addClient);
+router.patch("/:clientId", isAuthorized, deleteClient);
+router.put("/:clientId", isAuthorized, updateClient);
 
 module.exports = router;

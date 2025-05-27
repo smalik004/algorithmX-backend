@@ -10,6 +10,13 @@ const getBlogsUser = async () => {
         isActive: true,
       },
       order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: blogCategories,
+          as: "category",
+          attributes: ["id", "title"],
+        },
+      ],
     });
     return successResponse(statusCode.SUCCESS.OK, "Success!", result);
   } catch (err) {
@@ -154,6 +161,13 @@ const getBlogByIdUser = async (payload) => {
         id: payload?.blogId,
         isActive: true,
       },
+      include: [
+        {
+          model: blogCategories,
+          as: "category",
+          attributes: ["id", "title"],
+        },
+      ],
     });
     return successResponse(statusCode.SUCCESS.OK, "Success!", result);
   } catch (err) {

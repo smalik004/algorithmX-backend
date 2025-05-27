@@ -94,7 +94,10 @@ const blogs = sequelize.define("blogs", {
 });
 
 blogs.belongsTo(users, { foreignKey: "author_id" });
-blogs.belongsTo(blogCategories, { foreignKey: "category_id" });
+blogs.belongsTo(blogCategories, {
+  foreignKey: "category_id",
+  as: "category",
+});
 
 // sequelize
 //   .sync({ force: true })
