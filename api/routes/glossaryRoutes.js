@@ -13,6 +13,6 @@ router.get("/glossaries", getGlossaries);
 router.post("/", isAuthorized, addGlossary);
 router.put("/:glossaryId", isAuthorized, updateGlossary);
 router.delete("/:glossaryId", isAuthorized, deleteGlossary);
-router.get("/glossaries/:glossaryId", isAuthorized, getGlossaryById);
+router.get("/glossaries/:glossaryId", getGlossaryById);
 
 module.exports = router;
