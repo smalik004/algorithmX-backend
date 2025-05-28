@@ -8,6 +8,7 @@ const {
   addCategoriesUser,
   updateCategoryUser,
   deleteCategoryUser,
+  blogViewUser,
 } = require("../services/blogService");
 
 const getBlogs = async (req, res) => {
@@ -101,6 +102,23 @@ const deleteCategory = async (req, res) => {
   }
 };
 
+const blogView = async (req, res) => {
+  try {
+    const params = req.params;
+    const body = req.body;
+    if (body) {
+      const result = await blogViewUser(params, body);
+      res.status(result.status).json(result);
+    } else {
+      res.status(400).json({
+        message: "payload is required",
+      });
+    }
+  } catch (err) {
+    res.status(err?.status).json(err);
+  }
+};
+
 module.exports = {
   getBlogs,
   addBlog,
@@ -111,4 +129,5 @@ module.exports = {
   addCategories,
   updateCategory,
   deleteCategory,
+  blogView,
 };

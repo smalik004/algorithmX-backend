@@ -1,5 +1,6 @@
 const blogCategories = require("../models/blogCategoriesModel");
 const blogs = require("../models/blogsModel");
+const blogViews = require("../models/blogViews.Model");
 const { rejectResponse, successResponse } = require("../utils/response");
 const { statusCode } = require("../utils/statusCode");
 
@@ -288,6 +289,59 @@ const deleteCategoryUser = async (params) => {
   }
 };
 
+const blogViewUser = async (params, body) => {
+  const { device_token } = body;
+  const { blogId } = params;
+
+  if (!body.device_token) {
+    return rejectResponse(
+      statusCode.CLIENT_ERROR.BAD_REQUEST,
+      "Missing device token!"
+    );
+  }
+
+  try {
+    const isBlogExist = await blogs.findOne({
+      where: {
+        id: blogId,
+      },
+    });
+    if (isBlogExist) {
+      const isViewExist = await blogViews.findOne({
+        where: { blog_id: blogId, device_token },
+      });
+      if (isViewExist) {
+        return rejectResponse(
+          statusCode.CLIENT_ERROR.CONFLICT,
+          "View already registered from same user with same blog!"
+        );
+      } else {
+        const addView = await blogViews.create({
+          blog_id: blogId,
+          device_token,
+        });
+        await isBlogExist.update({ views: isBlogExist.views + 1 });
+        if (addView) {
+          return successResponse(
+            statusCode.SUCCESS.OK,
+            "View Added Successfully!"
+          );
+        }
+      }
+    } else {
+      return rejectResponse(
+        statusCode.CLIENT_ERROR.BAD_REQUEST,
+        "Blog doesn't exist!"
+      );
+    }
+  } catch (err) {
+    throw rejectResponse(
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      err?.message
+    );
+  }
+};
+
 module.exports = {
   getBlogsUser,
   addBlogUser,
@@ -298,4 +352,5 @@ module.exports = {
   addCategoriesUser,
   updateCategoryUser,
   deleteCategoryUser,
+  blogViewUser,
 };
