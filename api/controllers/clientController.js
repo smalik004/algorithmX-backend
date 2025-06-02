@@ -17,7 +17,7 @@ const getClients = async (req, res) => {
 const addClient = async (req, res) => {
   try {
     const payload = req.body;
-    const result = await addClientUser(payload);
+    const result = await addClientUser(payload, req);
     res.status(result.status).json(result);
   } catch (err) {
     res.status(err?.status).json(err);

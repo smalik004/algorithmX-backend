@@ -2,21 +2,23 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-// Allowed image file types
-const allowedTypes = /jpeg|jpg|png|gif/;
+// Allow image + video types
+const allowedTypes = /jpeg|jpg|png|gif|mp4|mov|avi|webm|mkv/;
 
 const fileFilter = (req, file, cb) => {
-  const extName = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimeType = allowedTypes.test(file.mimetype);
+  const extName = allowedTypes.test(
+    path.extname(file.originalname).toLowerCase()
+  );
+  const mimeType = allowedTypes.test(file.mimetype.toLowerCase());
 
   if (extName && mimeType) {
     cb(null, true);
   } else {
-    cb(new Error("Only image files are allowed!"));
+    cb(new Error("Only image and video files are allowed!"));
   }
 };
 
-const dynamicUpload = (fieldName, folderName) => {
+const dynamicUpload = (fields, folderName) => {
   // Create folder if it doesn't exist
   const destinationPath = path.join(__dirname, `../../public/${folderName}`);
   if (!fs.existsSync(destinationPath)) {
@@ -33,14 +35,20 @@ const dynamicUpload = (fieldName, folderName) => {
     },
   });
 
-  const upload = multer({ storage, fileFilter });
+  const upload = multer({
+    storage,
+    fileFilter,
+    limits: {
+      fileSize: 100 * 1024 * 1024,
+    },
+  });
 
   return (req, res, next) => {
     const contentType = req.headers["content-type"] || "";
     const isMultipart = contentType.startsWith("multipart/form-data");
 
     if (isMultipart) {
-      upload.single(fieldName)(req, res, (err) => {
+      upload.fields(fields)(req, res, (err) => {
         if (err) {
           return res.status(400).json({ error: err.message });
         }

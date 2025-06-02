@@ -13,7 +13,7 @@ const {
   blogView,
 } = require("../controllers/blogController");
 const { isAuthorized } = require("../middleware/authMiddleware");
-const { dynamicUpload } = require("../middleware/imageUploadMiddleware");
+const { dynamicUpload } = require("../middleware/mediaUploadMiddleware");
 
 router.get("/get-blogs", getBlogs);
 router.post(

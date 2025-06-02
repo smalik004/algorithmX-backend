@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../db/dbConfig");
+const clientMetrices = require("./clientMetricesModel");
 
 const clients = sequelize.define("clients", {
   id: {
@@ -7,28 +8,132 @@ const clients = sequelize.define("clients", {
     primaryKey: true,
     autoIncrement: true,
   },
-  brandLogo: {
-    type: DataTypes.STRING,
-    allowNull: true,
+  productType: {
+    type: DataTypes.ENUM("mobile", "web"),
+    allowNull: false,
   },
   brandName: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  brandCategory: {
+  brandVideoURL: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  brandRGB: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  brandVideoTitle: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  brandRegion: {
+  brandIndustry: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  brandRequirement: {
+  brandServices: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  title: {
+  brandType: {
     type: DataTypes.STRING,
+    allowNull: false,
+  },
+  brandLogoURL: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  brandImageURL: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  brandAboutDesc: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  aboutImgURLs: {
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
+  solutionImgURL: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  solutionTitle: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  solutionDesc: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  clientImgURL: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  clientName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  clientDesignation: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  clientTestimonial: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  resultTitle: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  resultPointers: {
+    type: DataTypes.JSON,
+    allowNull: false,
+  },
+  businessProcess: {
+    type: DataTypes.JSON,
+    allowNull: false,
+  },
+  wireFrameURLs: {
+    type: DataTypes.JSON,
+    allowNull: false,
+  },
+  prototypeURLs: {
+    type: DataTypes.JSON,
+    allowNull: false,
+  },
+  techStackTitle: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  techStackURLs: {
+    type: DataTypes.JSON,
+    allowNull: false,
+  },
+  projectGoals: {
+    type: DataTypes.JSON,
+    allowNull: false,
+  },
+  projectGoalImgURL: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  optimizationTitle: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  optimizationDesc: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  optimizationPointers: {
+    type: DataTypes.JSON,
+    allowNull: false,
+  },
+  metricesId: {
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   isActive: {
@@ -38,8 +143,10 @@ const clients = sequelize.define("clients", {
   },
 });
 
+clients.belongsTo(clientMetrices, { foreignKey: "metricesId" });
+
 // sequelize
-//   .sync({ force: true })
+//   .sync({ force: false })
 //   .then(() => {
 //     console.log("clients table created successfully.");
 //   })
