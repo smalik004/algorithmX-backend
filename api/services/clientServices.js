@@ -9,6 +9,12 @@ const getClientsUser = async () => {
       where: {
         isActive: true,
       },
+      include: [
+        {
+          model: clientMetrices,
+          as: "metrices",
+        },
+      ],
     });
     return successResponse(statusCode.SUCCESS.OK, "Success!", result);
   } catch (err) {
@@ -298,9 +304,33 @@ const updateClientUser = async (params, payload) => {
   }
 };
 
+const getClientByIdUser = async (params) => {
+  try {
+    const result = await clients.findOne({
+      where: {
+        id: params.clientId,
+        isActive: true,
+      },
+      include: [
+        {
+          model: clientMetrices,
+          as: "metrices",
+        },
+      ],
+    });
+    return successResponse(statusCode.SUCCESS.OK, "Success!", result);
+  } catch (err) {
+    throw rejectResponse(
+      statusCode.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+      err?.message
+    );
+  }
+};
+
 module.exports = {
   getClientsUser,
   addClientUser,
   deleteClientUser,
   updateClientUser,
+  getClientByIdUser,
 };

@@ -143,7 +143,7 @@ const clients = sequelize.define("clients", {
   },
 });
 
-clients.belongsTo(clientMetrices, { foreignKey: "metricesId" });
+clients.belongsTo(clientMetrices, { foreignKey: "metricesId", as: "metrices" });
 
 // sequelize
 //   .sync({ force: false })

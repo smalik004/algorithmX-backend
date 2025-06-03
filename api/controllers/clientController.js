@@ -3,6 +3,7 @@ const {
   addClientUser,
   deleteClientUser,
   updateClientUser,
+  getClientByIdUser,
 } = require("../services/clientServices");
 
 const getClients = async (req, res) => {
@@ -45,4 +46,20 @@ const updateClient = async (req, res) => {
   }
 };
 
-module.exports = { getClients, addClient, deleteClient, updateClient };
+const getClientById = async (req, res) => {
+  try {
+    const params = req.params;
+    const result = await getClientByIdUser(params);
+    res.status(result.status).json(result);
+  } catch (err) {
+    res.status(err?.status).json(err);
+  }
+};
+
+module.exports = {
+  getClients,
+  addClient,
+  deleteClient,
+  updateClient,
+  getClientById,
+};

@@ -23,7 +23,7 @@ const getBlogs = async (req, res) => {
 const addBlog = async (req, res) => {
   try {
     const payload = req.body;
-    const file = req.file?.filename;
+    const file = req.files?.blog_image[0]?.filename;
     const result = await addBlogUser(payload, file);
     res.status(result.status).json(result);
   } catch (err) {
@@ -44,7 +44,7 @@ const deleteBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
   try {
     const payload = req.body;
-    const file = req.file?.filename;
+    const file = req.files?.blog_image[0]?.filename;
     const result = await updateBlogUser(payload, file);
     res.status(result.status).json(result);
   } catch (err) {

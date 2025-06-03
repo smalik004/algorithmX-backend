@@ -5,6 +5,7 @@ const {
   addClient,
   deleteClient,
   updateClient,
+  getClientById,
 } = require("../controllers/clientController");
 const { isAuthorized } = require("../middleware/authMiddleware");
 const { dynamicUpload } = require("../middleware/mediaUploadMiddleware");
@@ -56,5 +57,6 @@ router.put(
   ),
   updateClient
 );
+router.get("/:clientId", getClientById);
 
 module.exports = router;

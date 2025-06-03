@@ -19,14 +19,14 @@ router.get("/get-blogs", getBlogs);
 router.post(
   "/add-blog",
   isAuthorized,
-  dynamicUpload("blog_image", "blog-images"),
+  dynamicUpload([{ name: "blog_image" }], "blog-images"),
   addBlog
 );
 router.patch("/delete-blog/:blogId", isAuthorized, deleteBlog);
 router.put(
   "/update-blog",
   isAuthorized,
-  dynamicUpload("blog_image", "blog-images"),
+  dynamicUpload([{ name: "blog_image" }], "blog-images"),
   updateBlog
 );
 router.get("/:blogId", getBlogById);
