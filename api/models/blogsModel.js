@@ -99,13 +99,13 @@ blogs.belongsTo(blogCategories, {
   as: "category",
 });
 
-// sequelize
-//   .sync({ force: true })
-//   .then(() => {
-//     console.log("blogs table created successfully.");
-//   })
-//   .catch((err) => {
-//     console.error("Error creating table:", err);
-//   });
+sequelize
+  .sync({ force: true })
+  .then(() => {
+    console.log("blogs table created successfully.");
+  })
+  .catch((err) => {
+    console.error("Error creating table:", err);
+  });
 
 module.exports = blogs;
