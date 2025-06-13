@@ -13,7 +13,8 @@ const {
 
 const getBlogs = async (req, res) => {
   try {
-    const result = await getBlogsUser();
+    const query = req.query;
+    const result = await getBlogsUser(query);
     res.status(result.status).json(result);
   } catch (err) {
     res.status(err?.status).json(err);
@@ -44,7 +45,10 @@ const deleteBlog = async (req, res) => {
 const updateBlog = async (req, res) => {
   try {
     const payload = req.body;
-    const file = req.files?.blog_image[0]?.filename;
+    let file;
+    if (req.files?.blog_image) {
+      file = req.files?.blog_image[0]?.filename;
+    }
     const result = await updateBlogUser(payload, file);
     res.status(result.status).json(result);
   } catch (err) {

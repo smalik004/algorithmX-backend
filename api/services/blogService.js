@@ -4,12 +4,15 @@ const blogViews = require("../models/blogViews.Model");
 const { rejectResponse, successResponse } = require("../utils/response");
 const { statusCode } = require("../utils/statusCode");
 
-const getBlogsUser = async () => {
+const getBlogsUser = async (query) => {
   try {
+    const whereCondition = {
+      isActive: true,
+      ...(query.status ? { status: query.status } : {}),
+    };
+
     const result = await blogs.findAll({
-      where: {
-        isActive: true,
-      },
+      where: whereCondition,
       order: [["createdAt", "DESC"]],
       include: [
         {
